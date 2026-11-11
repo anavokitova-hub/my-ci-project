@@ -25,3 +25,14 @@ jobs:
     - name: Run Unit Tests
       run: |
         pytest test_app.py
+
+    - name: Send Telegram Notification
+      if: always()
+      uses: appleboy/telegram-action@master
+      with:
+        to: ${{ secrets.TELEGRAM_TO }}
+        token: ${{ secrets.TELEGRAM_TOKEN }}
+        message: |
+          Статус сборки: ${{ job.status }}!
+          Репозиторий: ${{ github.repository }}
+          Коммит: ${{ github.event.head_commit.message }}
